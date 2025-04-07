@@ -1,6 +1,6 @@
 import { useState } from "react";
 import "./App.css";
-import { Moon, Sun } from "lucide-react";
+import { Download } from "lucide-react";
 
 import Charts from "./components/Charts";
 const App = () => {
@@ -93,6 +93,32 @@ const App = () => {
     }
     return acc;
   }, []);
+  const handleExportCSV = () => {
+    if (expenses.length === 0) {
+      alert("No expenses to export.");
+      return;
+    }
+
+    const headers = ["Description", "Amount", "Category", "Date"];
+    const rows = expenses.map((exp) => [
+      exp.description,
+      exp.amount,
+      exp.category,
+      exp.date,
+    ]);
+
+    let csvContent =
+      "data:text/csv;charset=utf-8," +
+      [headers, ...rows].map((e) => e.join(",")).join("\n");
+
+    const encodedUri = encodeURI(csvContent);
+    const link = document.createElement("a");
+    link.setAttribute("href", encodedUri);
+    link.setAttribute("download", "expenses.csv");
+    document.body.appendChild(link);
+    link.click();
+    document.body.removeChild(link);
+  };
 
   return (
     <div
@@ -103,17 +129,41 @@ const App = () => {
         padding: "20px",
       }}
     >
-      <div style={{ display: "flex" }}>
-        <h1 style={{ textAlign: "center" }}>Expense Tracker</h1>
-        <label className="switch">
-          <input
-            type="checkbox"
-            checked={darkMode}
-            onChange={() => setDarkMode(!darkMode)}
-          />
-          <span className="slider"></span>
-        </label>{" "}
+      <div
+        style={{
+          display: "flex",
+          alignItems: "center",
+          justifyContent: "space-between",
+          flexWrap: "wrap",
+        }}
+      >
+        <h1 style={{ textAlign: "left", flex: "1 1 200px" }}>
+          Expense Tracker
+        </h1>
+
+        <div style={{ display: "flex", alignItems: "center", gap: "10px" }}>
+          {/* Dark Mode Toggle */}
+          <label className="switch">
+            <input
+              type="checkbox"
+              checked={darkMode}
+              onChange={() => setDarkMode(!darkMode)}
+            />
+            <span className="slider"></span>
+          </label>
+
+          {/* Download Button */}
+          <button
+            onClick={handleExportCSV}
+            className="download-btn"
+            title="Download CSV"
+          >
+            <Download size={20} style={{ marginRight: "5px" }} />
+            Export CSV
+          </button>
+        </div>
       </div>
+
       <div
         style={{
           marginTop: "20px",

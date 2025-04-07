@@ -117,3 +117,32 @@ button:hover {
   color: #f1f1f1;
   border-color: #444;
 }
+.download-btn {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  padding: 8px 14px;
+  background-color: #4caf50;
+  color: white;
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
+  font-weight: 500;
+  transition: background-color 0.3s ease;
+}
+
+.download-btn:hover {
+  background-color: #388e3c;
+}
+
+@media screen and (max-width: 600px) {
+  .download-btn {
+    width: 100%;
+    justify-content: center;
+    margin-top: 10px;
+  }
+
+  .switch {
+    margin-top: 10px;
+  }
+}
